@@ -10,5 +10,12 @@ class Snake extends Component {
   @override
   Future<void> onLoad() async {
     super.onLoad();
+
+    head = Head();
+    add(head);
+
+    final bodyPart = BodyPart();
+    bodyParts.add(bodyPart);
+    add(bodyPart);
   }
 }

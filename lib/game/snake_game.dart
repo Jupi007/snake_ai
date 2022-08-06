@@ -3,7 +3,6 @@ import 'package:flame/input.dart';
 
 import 'components/events.dart';
 import 'components/playroom.dart';
-import 'components/playroom/snake.dart';
 
 class SnakeGame extends FlameGame
     with
@@ -12,7 +11,6 @@ class SnakeGame extends FlameGame
         HasCollisionDetection {
   final events = Events();
   final playroom = Playroom();
-  final snake = Snake();
 
   @override
   Future<void> onLoad() async {
@@ -20,6 +18,5 @@ class SnakeGame extends FlameGame
 
     add(events);
     add(playroom);
-    add(snake);
   }
 }
