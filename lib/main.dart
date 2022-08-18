@@ -4,6 +4,7 @@ import 'package:yaru/yaru.dart';
 
 import 'game/snake_game.dart';
 
+
 void main() {
   runApp(MyApp());
 }

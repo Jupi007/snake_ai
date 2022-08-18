@@ -1,11 +1,15 @@
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 
+import '../direction.dart';
+
 class Events extends Component with KeyboardHandler {
-  bool left = false;
-  bool right = false;
-  bool up = false;
-  bool down = false;
+  bool _left = false;
+  bool _right = false;
+  bool _up = false;
+  bool _down = false;
+
+  Direction? direction;
 
   @override
   bool onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
@@ -14,19 +18,29 @@ class Events extends Component with KeyboardHandler {
     final isKeyDown = event is RawKeyDownEvent;
 
     if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
-      left = isKeyDown;
+      _left = isKeyDown;
     }
 
     if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
-      right = isKeyDown;
+      _right = isKeyDown;
     }
 
     if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
-      up = isKeyDown;
+      _up = isKeyDown;
     }
 
     if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
-      down = isKeyDown;
+      _down = isKeyDown;
+    }
+
+    if (_up && !_right && !_down && !_left) {
+      direction = Direction.up;
+    } else if (_right && !_up && !_down && !_left) {
+      direction = Direction.right;
+    } else if (_down && !_up && !_right && !_left) {
+      direction = Direction.down;
+    } else if (_left && !_up && !_right && !_down) {
+      direction = Direction.left;
     }
 
     return false;

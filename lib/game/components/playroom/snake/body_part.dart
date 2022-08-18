@@ -1,10 +1,19 @@
+import 'package:flame/collisions.dart';
+import 'package:flame/components.dart';
 import 'package:flame_svg/flame_svg.dart';
 
-class BodyPart extends SvgComponent {
+import '../../mixins/playroom_component.dart';
+import '../../playroom.dart';
+import '../snake.dart';
+
+class BodyPart extends SvgComponent with ParentIsA<Snake>, PlayroomComponent {
   @override
   Future<void> onLoad() async {
     super.onLoad();
 
-    svg = await Svg.load('assets/images/body_part.svg');
+    svg = await Svg.load('images/body_part.svg');
+    size = Vector2.all(cellSize);
+
+    add(RectangleHitbox());
   }
 }

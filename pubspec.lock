@@ -136,7 +136,7 @@ packages:
       name: material_color_utilities
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.5"
+    version: "0.2.0"
   meta:
     dependency: transitive
     description:
@@ -283,5 +283,5 @@ packages:
     source: hosted
     version: "0.1.0"
 sdks:
-  dart: ">=2.19.0-49.0.dev <3.0.0"
+  dart: ">=2.17.0 <3.0.0"
   flutter: ">=3.0.0"
