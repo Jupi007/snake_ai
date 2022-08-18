@@ -2,11 +2,12 @@ import 'package:flame/components.dart';
 
 import '../../direction.dart';
 import '../../snake_game.dart';
+import '../playroom.dart';
 import '../playroom_cell.dart';
 import 'snake/body_part.dart';
 import 'snake/head.dart';
 
-class Snake extends Component with HasGameRef<SnakeGame> {
+class Snake extends Component with HasGameRef<SnakeGame>, ParentIsA<Playroom> {
   late Head head;
   List<BodyPart> bodyParts = [];
 

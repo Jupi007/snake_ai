@@ -15,7 +15,7 @@ class Head extends SvgComponent
         CollisionCallbacks,
         ParentIsA<Snake>,
         HasGameRef<SnakeGame>,
-        PlayroomComponent {
+        PlayroomCellComponent {
   @override
   Future<void> onLoad() async {
     super.onLoad();
@@ -36,9 +36,9 @@ class Head extends SvgComponent
 
     if (other is Fruit) {
       parent.hasEatenFruit = true;
+      other.move();
     } else if (other is Wall || other is BodyPart) {
-      print('Game Over');
-      gameRef.pauseEngine();
+      gameRef.gameOver();
     }
   }
 }

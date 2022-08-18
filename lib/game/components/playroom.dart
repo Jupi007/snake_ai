@@ -12,6 +12,7 @@ class Playroom extends Component {
   List<Wall> walls = [];
   late Fruit fruit;
   late Snake snake;
+
   @override
   Future<void> onLoad() async {
     super.onLoad();

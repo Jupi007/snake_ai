@@ -9,12 +9,26 @@ class SnakeGame extends FlameGame
         SingleGameInstance,
         HasKeyboardHandlerComponents,
         HasCollisionDetection {
-  final events = Events();
-  final playroom = Playroom();
+  late Events events;
+  late Playroom playroom;
 
   @override
   Future<void> onLoad() async {
     super.onLoad();
+
+    _init();
+  }
+
+  void gameOver() {
+    remove(events);
+    remove(playroom);
+
+    _init();
+  }
+
+  void _init() {
+    events = Events();
+    playroom = Playroom();
 
     add(events);
     add(playroom);

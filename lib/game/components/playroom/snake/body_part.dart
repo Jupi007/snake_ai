@@ -4,9 +4,8 @@ import 'package:flame_svg/flame_svg.dart';
 
 import '../../mixins/playroom_component.dart';
 import '../../playroom.dart';
-import '../snake.dart';
 
-class BodyPart extends SvgComponent with ParentIsA<Snake>, PlayroomComponent {
+class BodyPart extends SvgComponent with PlayroomCellComponent {
   @override
   Future<void> onLoad() async {
     super.onLoad();
