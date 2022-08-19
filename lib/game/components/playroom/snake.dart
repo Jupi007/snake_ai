@@ -20,6 +20,9 @@ class Snake extends Component with HasGameRef<SnakeGame>, ParentIsA<Playroom> {
   Future<void> onLoad() async {
     super.onLoad();
 
+    // The second is hidden behind the first one
+    // So the next body part is already loaded (no blink)
+    bodyParts.add(BodyPart()..cell = PlayroomCell(6, 5));
     bodyParts.add(BodyPart()..cell = PlayroomCell(6, 5));
     addAll(bodyParts);
 
@@ -48,18 +51,25 @@ class Snake extends Component with HasGameRef<SnakeGame>, ParentIsA<Playroom> {
     if (direction != null) {
       for (int i = bodyParts.length - 1; i >= 0; i--) {
         if (hasEatenFruit && i == bodyParts.length - 1) {
-          final bodyPart = BodyPart()..cell = bodyParts[i].cell;
+          final nextBodyPart = BodyPart()..cell = bodyParts[i].cell;
 
-          bodyParts.add(bodyPart);
-          add(bodyPart);
+          bodyParts.add(nextBodyPart);
+          add(nextBodyPart);
 
           hasEatenFruit = false;
         }
 
         if (i == 0) {
+          // If first part, move to head cell
           bodyParts[i].cell = head.cell;
         } else {
-          bodyParts[i].cell = bodyParts[i - 1].cell;
+          if (i == bodyParts.length - 1) {
+            // If last part, move to head cell or part cell - 2
+            bodyParts[i].cell = i - 2 == -1 ? head.cell : bodyParts[i - 2].cell;
+          } else {
+            // Else move part to next one
+            bodyParts[i].cell = bodyParts[i - 1].cell;
+          }
         }
       }
     }
