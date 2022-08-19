@@ -36,6 +36,7 @@ class Head extends SvgComponent
 
     if (other is Fruit) {
       parent.hasEatenFruit = true;
+      gameRef.increaseScore();
       other.move();
     } else if (other is Wall || other is BodyPart) {
       gameRef.gameOver();

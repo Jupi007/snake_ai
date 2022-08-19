@@ -12,6 +12,7 @@ environment:
 dependencies:
   flame: ^1.2.0
   flame_svg: ^1.4.0
+  provider: ^6.0.3
   yaru: ^0.3.3
   flutter:
     sdk: flutter
