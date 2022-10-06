@@ -8,11 +8,11 @@ import '../playroom.dart';
 class Wall extends SvgComponent with PlayroomCellComponent {
   @override
   Future<void> onLoad() async {
-    super.onLoad();
+    await super.onLoad();
 
     svg = await Svg.load('images/wall.svg');
     size = Vector2.all(cellSize);
 
-    add(RectangleHitbox());
+    await add(RectangleHitbox());
   }
 }

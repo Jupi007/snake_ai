@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       home: ChangeNotifierProvider<ScoreProvider>(
         create: (context) => ScoreProvider(),
         builder: (context, child) {
-          ScoreProvider scoreProvider =
+          final scoreProvider =
               Provider.of<ScoreProvider>(context, listen: false);
           final game = SnakeGame(scoreProvider);
 
@@ -29,9 +29,9 @@ class MyApp extends StatelessWidget {
             child: Scaffold(
               appBar: AppBar(
                 title: Consumer<ScoreProvider>(
-                  builder: ((context, scoreProvider, child) => Text(
+                  builder: (context, scoreProvider, child) => Text(
                         'Snake AI - Score: ${scoreProvider.score} - Best: ${scoreProvider.bestScore}',
-                      )),
+                      ),
                 ),
               ),
               body: GameWidget(game: game),

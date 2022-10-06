@@ -10,16 +10,16 @@ class Fruit extends SvgComponent
     with CollisionCallbacks, PlayroomCellComponent {
   @override
   Future<void> onLoad() async {
-    super.onLoad();
+    await super.onLoad();
 
     svg = await Svg.load('images/fruit.svg');
     size = Vector2.all(cellSize);
 
-    add(RectangleHitbox());
+    await add(RectangleHitbox());
   }
 
   void move() {
-    List<PlayroomCell> freeCells = [];
+    final freeCells = <PlayroomCell>[];
 
     for (var c = 0; c < playroomSize; c++) {
       for (var r = 0; r < playroomSize; r++) {
@@ -27,13 +27,13 @@ class Fruit extends SvgComponent
       }
     }
 
-    for (var wall in playroomRef.walls) {
+    for (final wall in playroomRef.walls) {
       freeCells.removeWhere(
         (element) => element.col == wall.col && element.row == wall.row,
       );
     }
 
-    for (var bodyPart in playroomRef.snake.bodyParts) {
+    for (final bodyPart in playroomRef.snake.bodyParts) {
       freeCells.removeWhere(
         (element) => element.col == bodyPart.col && element.row == bodyPart.row,
       );

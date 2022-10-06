@@ -18,16 +18,16 @@ class Snake extends Component with HasGameRef<SnakeGame>, ParentIsA<Playroom> {
 
   @override
   Future<void> onLoad() async {
-    super.onLoad();
+    await super.onLoad();
 
     // The second is hidden behind the first one
     // So the next body part is already loaded (no blink)
     bodyParts.add(BodyPart()..cell = PlayroomCell(6, 5));
     bodyParts.add(BodyPart()..cell = PlayroomCell(6, 5));
-    addAll(bodyParts);
+    await addAll(bodyParts);
 
     head = Head()..cell = PlayroomCell(5, 5);
-    add(head);
+    await add(head);
   }
 
   @override
@@ -49,7 +49,7 @@ class Snake extends Component with HasGameRef<SnakeGame>, ParentIsA<Playroom> {
 
   void _updateBodyPartsCell() {
     if (direction != null) {
-      for (int i = bodyParts.length - 1; i >= 0; i--) {
+      for (var i = bodyParts.length - 1; i >= 0; i--) {
         if (hasEatenFruit && i == bodyParts.length - 1) {
           final nextBodyPart = BodyPart()..cell = bodyParts[i].cell;
 

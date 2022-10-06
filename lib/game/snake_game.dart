@@ -18,7 +18,7 @@ class SnakeGame extends FlameGame
 
   @override
   Future<void> onLoad() async {
-    super.onLoad();
+    await super.onLoad();
 
     _init();
   }

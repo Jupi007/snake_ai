@@ -1,9 +1,9 @@
 import 'package:flame/components.dart';
 
-import 'playroom_cell.dart';
 import 'playroom/fruit.dart';
 import 'playroom/snake.dart';
 import 'playroom/wall.dart';
+import 'playroom_cell.dart';
 
 const playroomSize = 15;
 const cellSize = 24.0;
@@ -15,7 +15,7 @@ class Playroom extends Component {
 
   @override
   Future<void> onLoad() async {
-    super.onLoad();
+    await super.onLoad();
 
     for (var i = 0; i < playroomSize - 1; i++) {
       walls.add(Wall()..cell = PlayroomCell(i, 0)); // Top
@@ -23,12 +23,12 @@ class Playroom extends Component {
       walls.add(Wall()..cell = PlayroomCell(i + 1, playroomSize - 1)); // Bottom
       walls.add(Wall()..cell = PlayroomCell(0, i + 1)); // Left
     }
-    addAll(walls);
+    await addAll(walls);
 
     fruit = Fruit()..cell = PlayroomCell(3, 3);
-    add(fruit);
+    await add(fruit);
 
     snake = Snake();
-    add(snake);
+    await add(snake);
   }
 }

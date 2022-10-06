@@ -18,12 +18,12 @@ class Head extends SvgComponent
         PlayroomCellComponent {
   @override
   Future<void> onLoad() async {
-    super.onLoad();
+    await super.onLoad();
 
     svg = await Svg.load('images/head.svg');
     size = Vector2.all(cellSize);
 
-    add(RectangleHitbox());
+    await add(RectangleHitbox());
   }
 
   @override
