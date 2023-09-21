@@ -3,16 +3,20 @@ import 'package:flame/input.dart';
 
 import 'components/events.dart';
 import 'components/playroom.dart';
-import 'score_provider.dart';
 
 class SnakeGame extends FlameGame
     with
         // SingleGameInstance,
         HasKeyboardHandlerComponents,
         HasCollisionDetection {
-  SnakeGame(this._scoreProvider);
+  SnakeGame({
+    required this.onIncreaseScore,
+    required this.onGameOver,
+  });
 
-  final ScoreProvider _scoreProvider;
+  final void Function() onIncreaseScore;
+  final void Function() onGameOver;
+
   late Events events;
   late Playroom playroom;
 
@@ -26,7 +30,7 @@ class SnakeGame extends FlameGame
   void gameOver() {
     remove(events);
     remove(playroom);
-    _scoreProvider.resetScore();
+    onGameOver();
 
     _init();
   }
@@ -40,6 +44,6 @@ class SnakeGame extends FlameGame
   }
 
   void increaseScore() {
-    _scoreProvider.increaseScore();
+    onIncreaseScore();
   }
 }

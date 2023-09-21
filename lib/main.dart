@@ -23,7 +23,10 @@ class MyApp extends StatelessWidget {
         builder: (context, child) {
           final scoreProvider =
               Provider.of<ScoreProvider>(context, listen: false);
-          final game = SnakeGame(scoreProvider);
+          final game = SnakeGame(
+            onIncreaseScore: scoreProvider.increaseScore,
+            onGameOver: scoreProvider.resetScore,
+          );
 
           return YaruTheme(
             child: Scaffold(
