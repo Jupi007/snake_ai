@@ -7,7 +7,7 @@ import 'score_provider.dart';
 
 class SnakeGame extends FlameGame
     with
-        SingleGameInstance,
+        // SingleGameInstance,
         HasKeyboardHandlerComponents,
         HasCollisionDetection {
   SnakeGame(this._scoreProvider);

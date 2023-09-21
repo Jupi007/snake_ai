@@ -6,16 +6,16 @@ publish_to: "none"
 version: 0.0.1
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
-  flutter: ">= 3.0.0"
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.10.0"
 
 dependencies:
-  flame: ^1.2.0
-  flame_svg: ^1.4.0
+  flame: ^1.8.2
+  flame_svg: ^1.8.1
   flutter:
     sdk: flutter
   provider: ^6.0.3
-  yaru: ^0.3.3
+  yaru: ^1.1.0
 
 dev_dependencies:
   flutter_lints: ^2.0.0

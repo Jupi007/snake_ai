@@ -1,7 +1,11 @@
+import 'dart:math' as math;
+import 'dart:ui';
+
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame_svg/flame_svg.dart';
 
+import '../../../direction.dart';
 import '../../../snake_game.dart';
 import '../../mixins/playroom_component.dart';
 import '../../playroom.dart';
@@ -41,5 +45,23 @@ class Head extends SvgComponent
     } else if (other is Wall || other is BodyPart) {
       gameRef.gameOver();
     }
+  }
+
+  @override
+  void render(Canvas canvas) {
+    final angle = switch (parent.direction) {
+      Direction.up => 0.0,
+      Direction.right => 0.5,
+      Direction.down => 1.0,
+      Direction.left => 1.5,
+      null => 1.5, // Default direction is left
+    };
+
+    canvas.save();
+    canvas.translate(cellSize / 2, cellSize / 2);
+    canvas.rotate(angle * math.pi);
+    canvas.translate(-cellSize / 2, -cellSize / 2);
+    super.render(canvas);
+    canvas.restore();
   }
 }

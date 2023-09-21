@@ -30,8 +30,8 @@ class MyApp extends StatelessWidget {
               appBar: AppBar(
                 title: Consumer<ScoreProvider>(
                   builder: (context, scoreProvider, child) => Text(
-                        'Snake AI - Score: ${scoreProvider.score} - Best: ${scoreProvider.bestScore}',
-                      ),
+                    'Snake AI - Score: ${scoreProvider.score} - Best: ${scoreProvider.bestScore}',
+                  ),
                 ),
               ),
               body: GameWidget(game: game),
