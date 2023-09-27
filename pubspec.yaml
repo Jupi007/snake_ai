@@ -10,11 +10,11 @@ environment:
   flutter: ">=3.10.0"
 
 dependencies:
+  event: ^2.1.2
   flame: ^1.8.2
   flame_svg: ^1.8.1
   flutter:
     sdk: flutter
-  provider: ^6.0.3
   yaru: ^1.1.0
 
 dev_dependencies:

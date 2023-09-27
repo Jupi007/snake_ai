@@ -17,22 +17,26 @@ class Events extends Component with KeyboardHandler {
 
     final isKeyDown = event is RawKeyDownEvent;
 
-    if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
-      _left = isKeyDown;
+    switch (event.logicalKey) {
+      case LogicalKeyboardKey.arrowLeft:
+        _left = isKeyDown;
+        return true;
+      case LogicalKeyboardKey.arrowRight:
+        _right = isKeyDown;
+        return true;
+      case LogicalKeyboardKey.arrowUp:
+        _up = isKeyDown;
+        return true;
+      case LogicalKeyboardKey.arrowDown:
+        _down = isKeyDown;
+        return true;
     }
 
-    if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
-      _right = isKeyDown;
-    }
+    return false;
+  }
 
-    if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
-      _up = isKeyDown;
-    }
-
-    if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
-      _down = isKeyDown;
-    }
-
+  @override
+  void update(double dt) {
     if (_up && !_right && !_down && !_left) {
       direction = Direction.up;
     } else if (_right && !_up && !_down && !_left) {
@@ -42,7 +46,5 @@ class Events extends Component with KeyboardHandler {
     } else if (_left && !_up && !_right && !_down) {
       direction = Direction.left;
     }
-
-    return false;
   }
 }

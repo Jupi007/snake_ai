@@ -15,6 +15,8 @@ class Fruit extends SvgComponent
     svg = await Svg.load('images/fruit.svg');
     size = Vector2.all(cellSize);
 
+    cell = PlayroomCell(3, 3);
+
     await add(RectangleHitbox());
   }
 

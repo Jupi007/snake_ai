@@ -25,7 +25,7 @@ class Playroom extends Component {
     }
     await addAll(walls);
 
-    fruit = Fruit()..cell = PlayroomCell(3, 3);
+    fruit = Fruit();
     await add(fruit);
 
     snake = Snake();
