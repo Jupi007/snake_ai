@@ -5,14 +5,14 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame_svg/flame_svg.dart';
 
-import '../../../direction.dart';
+import '../../../../utils/direction.dart';
 import '../../../snake_game.dart';
 import '../../mixins/playroom_component.dart';
 import '../../playroom.dart';
 import '../fruit.dart';
 import '../snake.dart';
 import '../wall.dart';
-import 'body_part.dart';
+import 'tail.dart';
 
 class Head extends SvgComponent
     with
@@ -42,7 +42,7 @@ class Head extends SvgComponent
       parent.hasEatenFruit = true;
       gameRef.increaseScore();
       other.move();
-    } else if (other is Wall || other is BodyPart) {
+    } else if (other is Wall || other is TailPart) {
       gameRef.gameOver();
     }
   }

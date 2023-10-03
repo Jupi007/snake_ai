@@ -1,30 +1,56 @@
+import '../../utils/math.dart';
 import 'connection.dart';
 
-class Neuron {
-  double value = 0.0;
+abstract class Neuron {
+  late final int id;
+  double get value;
 }
 
-/// A first range neuron which represents a "sense"
-class SensoryNeuron extends Neuron {
-  SensoryNeuron({required this.outputConnection});
-
-  final Connection outputConnection;
+abstract interface class WithInputsNeuron extends Neuron {
+  List<Connection> get inputs;
 }
 
-/// An intermediary neuron which will makes the network "think"
-class RelayNeuron extends Neuron {
-  RelayNeuron({
-    required this.inputConnection,
-    required this.outputConnection,
-  });
-
-  final Connection inputConnection;
-  final Connection outputConnection;
+abstract interface class WithOutputsNeuron extends Neuron {
+  List<Connection> get outputs;
 }
 
-/// A last range neuron which links the network to an "action"
-class MotorNeuron extends Neuron {
-  MotorNeuron({required this.inputConnection});
+mixin WithInputsNeuronMixin on Neuron implements WithInputsNeuron {
+  @override
+  List<Connection> get inputs;
 
-  final Connection inputConnection;
+  @override
+  double get value {
+    var value = 0.0;
+
+    for (final input in inputs) {
+      value = value + input.value;
+    }
+
+    return sigmoid(value);
+  }
+}
+
+class InputNeuron extends Neuron implements WithOutputsNeuron {
+  @override
+  final List<Connection> outputs = [];
+
+  double? _value;
+
+  @override
+  double get value => _value!;
+  set value(double? value) => _value = value;
+}
+
+class HiddenNeuron extends Neuron
+    with WithInputsNeuronMixin
+    implements WithOutputsNeuron {
+  @override
+  final List<Connection> inputs = [];
+  @override
+  final List<Connection> outputs = [];
+}
+
+class OutputNeuron extends Neuron with WithInputsNeuronMixin {
+  @override
+  final List<Connection> inputs = [];
 }

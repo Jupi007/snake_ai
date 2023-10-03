@@ -25,10 +25,10 @@ class Playroom extends Component {
     }
     await addAll(walls);
 
-    fruit = Fruit();
-    await add(fruit);
-
     snake = Snake();
     await add(snake);
+
+    fruit = Fruit();
+    await add(fruit);
   }
 }

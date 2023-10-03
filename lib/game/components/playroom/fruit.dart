@@ -15,7 +15,8 @@ class Fruit extends SvgComponent
     svg = await Svg.load('images/fruit.svg');
     size = Vector2.all(cellSize);
 
-    cell = PlayroomCell(3, 3);
+    cell = PlayroomCell(5, 3);
+    //move();
 
     await add(RectangleHitbox());
   }
@@ -35,7 +36,7 @@ class Fruit extends SvgComponent
       );
     }
 
-    for (final bodyPart in playroomRef.snake.bodyParts) {
+    for (final bodyPart in playroomRef.snake.tail) {
       freeCells.removeWhere(
         (element) => element.col == bodyPart.col && element.row == bodyPart.row,
       );
