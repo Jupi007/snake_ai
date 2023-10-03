@@ -5,6 +5,7 @@ import 'package:event/event.dart';
 
 import '../ai/neural_network.dart';
 import '../ai/population.dart';
+import '../game/components/mixins/playroom_component.dart';
 import '../game/components/playroom.dart';
 import '../game/components/playroom_cell.dart';
 import '../game/snake_game.dart';
@@ -109,49 +110,10 @@ class SnakeGameAI {
     ];
   }
 
-  List<double> _computeWallInputs(List<_Slope> slopes) {
-    final headPosition = game.playroom.snake.head.cell;
-    final wallInputs = <double>[];
-
-    for (final slope in slopes) {
-      var dx = 0;
-      var dy = 0;
-      var cell = PlayroomCell(
-        headPosition.col + dx,
-        headPosition.row + dy,
-      );
-      double wallPosition;
-
-      while (true) {
-        dx += slope.dx;
-        dy += slope.dy;
-
-        cell = PlayroomCell(
-          headPosition.col + dx,
-          headPosition.row + dy,
-        );
-
-        final wall = game.playroom.walls.firstWhereOrNull(
-          (wall) => wall.col == cell.col && wall.row == cell.row,
-        );
-
-        if (wall != null) {
-          wallPosition = math.sqrt(
-                math.pow(headPosition.col - wall.col, 2) +
-                    math.pow(headPosition.row - wall.row, 2),
-              ) /
-              playroomSize;
-          break;
-        }
-      }
-
-      wallInputs.add(wallPosition);
-    }
-
-    return wallInputs;
-  }
-
-  List<double> _computeTailInputs(List<_Slope> slopes) {
+  List<double> _computeDistanceToHeadInputs(
+    List<PlayroomCellComponent> playroomCells,
+    List<_Slope> slopes,
+  ) {
     final headPosition = game.playroom.snake.head.cell;
     final tailInputs = <double>[];
 
@@ -162,10 +124,8 @@ class SnakeGameAI {
         headPosition.col + dx,
         headPosition.row + dy,
       );
+      double? tailPosition;
 
-      dx = 0;
-      dy = 0;
-      var tailFound = false;
       while (true) {
         dx += slope.dx;
         dy += slope.dy;
@@ -182,18 +142,38 @@ class SnakeGameAI {
           break;
         }
 
-        for (final tail in game.playroom.snake.tail) {
-          if (tail.col == cell.col && tail.row == cell.row) {
-            tailFound = true;
-            break;
-          }
+        final tail = playroomCells.firstWhereOrNull(
+          (tail) => tail.col == cell.col && tail.row == cell.row,
+        );
+
+        if (tail != null) {
+          tailPosition = math.sqrt(
+                math.pow(headPosition.col - tail.col, 2) +
+                    math.pow(headPosition.row - tail.row, 2),
+              ) /
+              playroomSize;
+          break;
         }
       }
 
-      tailInputs.add(tailFound ? 1.0 : 0.0);
+      tailInputs.add(tailPosition ?? 0.0);
     }
 
     return tailInputs;
+  }
+
+  List<double> _computeWallInputs(List<_Slope> slopes) {
+    return _computeDistanceToHeadInputs(
+      game.playroom.walls,
+      slopes,
+    );
+  }
+
+  List<double> _computeTailInputs(List<_Slope> slopes) {
+    return _computeDistanceToHeadInputs(
+      game.playroom.snake.tail,
+      slopes,
+    );
   }
 
   List<double> _conputeFruitInputs(List<_Slope> slopes) {
