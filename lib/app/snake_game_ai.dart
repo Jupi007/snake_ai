@@ -14,7 +14,7 @@ import '../utils/direction.dart';
 const _nbInputNeurons = 24;
 const _nbOutputNeurons = 4;
 
-const _populationSize = 200;
+const _populationSize = 300;
 
 class SnakeGameAI {
   SnakeGameAI({
