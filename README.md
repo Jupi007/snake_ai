@@ -1,3 +1,3 @@
 # snake_ai
 
-![App preview](.github/peek.gif)
+[App preview](.github/capture.webm)
