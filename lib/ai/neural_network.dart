@@ -4,6 +4,8 @@ import '../../utils/math.dart';
 import 'connection.dart';
 import 'neuron.dart';
 
+const minimalFitness = 0.00001;
+
 class NeuralNetwork {
   NeuralNetwork({
     required this.inputNeurons,
@@ -23,6 +25,58 @@ class NeuralNetwork {
     }
   }
 
+  factory NeuralNetwork.fromJson(Map<String, dynamic> json) {
+    final inputNeurons = (json['inputNeurons'] as List<dynamic>?)!
+        .map((n) => InputNeuron.fromJson(n as Map<String, dynamic>))
+        .toList();
+    final hiddenNeurons = (json['hiddenNeurons'] as List<dynamic>?)
+        ?.map((n) => HiddenNeuron.fromJson(n as Map<String, dynamic>))
+        .toList();
+    final outputNeurons = (json['outputNeurons'] as List<dynamic>?)!
+        .map((n) => OutputNeuron.fromJson(n as Map<String, dynamic>))
+        .toList();
+
+    final withOutputsNeuron = [
+      ...inputNeurons,
+      ...?hiddenNeurons,
+    ];
+    final withInputsNeuron = [
+      ...?hiddenNeurons,
+      ...outputNeurons,
+    ];
+
+    final connections = (json['connections'] as List<dynamic>?)!.map(
+      (c) {
+        return Connection(
+          input: withOutputsNeuron.firstWhere(
+            (n) => n.id == c['input'] as int,
+          ),
+          output: withInputsNeuron.firstWhere(
+            (n) => n.id == c['output'] as int,
+          ),
+          innovation: c['innovation'] as int,
+          weight: c['weight'] as double,
+          enabled: c['enabled'] as bool,
+        );
+      },
+    ).toList();
+
+    return NeuralNetwork(
+      inputNeurons: inputNeurons,
+      hiddenNeurons: hiddenNeurons ?? [],
+      outputNeurons: outputNeurons,
+      connections: connections,
+      initNeuronIds: false,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'inputNeurons': inputNeurons.map((n) => n.toJson()).toList(),
+        'outputNeurons': outputNeurons.map((n) => n.toJson()).toList(),
+        'hiddenNeurons': hiddenNeurons.map((n) => n.toJson()).toList(),
+        'connections': connections.map((c) => c.toJson()).toList(),
+      };
+
   final List<InputNeuron> inputNeurons;
   final List<OutputNeuron> outputNeurons;
   final List<HiddenNeuron> hiddenNeurons;
@@ -35,7 +89,7 @@ class NeuralNetwork {
   List<Connection> get activeConnections =>
       connections.where((c) => c.enabled).toList();
 
-  double fitness = 1.0;
+  double fitness = minimalFitness;
 
   int get neuronsMaxId => neurons
       .map((n) => n.id)

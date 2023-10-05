@@ -28,7 +28,7 @@ class SnakeGame extends FlameGame
   Future<void> onLoad() async {
     await super.onLoad();
 
-    _init();
+    init();
   }
 
   @override
@@ -41,13 +41,11 @@ class SnakeGame extends FlameGame
   }
 
   void gameOver() {
-    remove(events);
-    remove(playroom);
-
+    kill();
     onGameOver.broadcast();
   }
 
-  void _init() {
+  void init() {
     events = Events();
     playroom = Playroom();
 
@@ -55,12 +53,13 @@ class SnakeGame extends FlameGame
     add(playroom);
   }
 
-  void increaseScore() {
-    onIncreaseScore.broadcast();
+  void kill() {
+    remove(events);
+    remove(playroom);
   }
 
-  void reset() {
-    _init();
+  void increaseScore() {
+    onIncreaseScore.broadcast();
   }
 
   void toggleSlowMode() {

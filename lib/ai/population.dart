@@ -15,24 +15,57 @@ class Population {
     this.excessCoeff = 1.0,
     this.weightDiffCoeff = 2.0,
     this.diffThresh = 1.5,
+    List<NeuralNetwork>? individuals,
   }) {
-    for (var i = 0; i < populationSize; i++) {
-      final neuralNetwork = NeuralNetwork(
-        inputNeurons: [
-          for (var i = 0; i < nbInputs; i++) InputNeuron(),
-        ],
-        outputNeurons: [
-          for (var i = 0; i < nbOutputs; i++) OutputNeuron(),
-        ],
-        hiddenNeurons: [],
-        connections: [],
-      )..addConnection();
+    if (individuals != null) {
+      this.individuals.addAll(individuals);
+    } else {
+      for (var i = 0; i < populationSize; i++) {
+        final neuralNetwork = NeuralNetwork(
+          inputNeurons: [
+            for (var i = 0; i < nbInputs; i++) InputNeuron(),
+          ],
+          outputNeurons: [
+            for (var i = 0; i < nbOutputs; i++) OutputNeuron(),
+          ],
+          hiddenNeurons: [],
+          connections: [],
+        )..addConnection();
 
-      individuals.add(neuralNetwork);
+        this.individuals.add(neuralNetwork);
+      }
     }
 
     _speciatePopulation();
   }
+
+  factory Population.fromJson(Map<String, dynamic> json) {
+    Connection.innovationCounter = json['innovationCounter'] as int;
+
+    return Population(
+      nbInputs: json['nbInputs'] as int,
+      nbOutputs: json['nbOutputs'] as int,
+      populationSize: json['populationSize'] as int,
+      excessCoeff: json['excessCoeff'] as double,
+      weightDiffCoeff: json['weightDiffCoeff'] as double,
+      diffThresh: json['diffThresh'] as double,
+      individuals: (json['individuals'] as List<dynamic>?)
+          ?.map((i) => NeuralNetwork.fromJson(i as Map<String, dynamic>))
+          .toList(),
+    )..generation = json['generation'] as int;
+  }
+
+  Map<String, dynamic> toJson() => {
+        'nbInputs': nbInputs,
+        'nbOutputs': nbOutputs,
+        'populationSize': populationSize,
+        'excessCoeff': excessCoeff,
+        'weightDiffCoeff': weightDiffCoeff,
+        'diffThresh': diffThresh,
+        'individuals': individuals.map((e) => e.toJson()).toList(),
+        'innovationCounter': Connection.innovationCounter,
+        'generation': generation,
+      };
 
   final int nbInputs;
   final int nbOutputs;
@@ -50,6 +83,8 @@ class Population {
           .map((network) => network.fitness)
           .reduce((f1, f2) => f1 + f2) /
       individuals.length;
+
+  int generation = 1;
 
   double _computeConnectionsWeightDifference(
     List<Connection> connections1,
@@ -233,6 +268,8 @@ class Population {
     }
 
     _clearEmptySpecies();
+
+    generation++;
   }
 
   void _clearEmptySpecies() => species.removeWhere((specie) => specie.isEmpty);

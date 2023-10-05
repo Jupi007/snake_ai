@@ -1,7 +1,13 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:eventsubscriber/eventsubscriber.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:yaru_icons/yaru_icons.dart';
 
+import '../ai/population.dart';
 import '../game/components/playroom.dart';
 import '../game/snake_game.dart';
 import 'snake_game_ai.dart';
@@ -19,7 +25,7 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  late final SnakeGameAI _snakeAi;
+  late SnakeGameAI _snakeAi;
 
   @override
   void initState() {
@@ -40,7 +46,18 @@ class _AppState extends State<App> {
         actions: [
           IconButton(
             onPressed: game.toggleSlowMode,
-            icon: const Icon(Icons.speed),
+            icon: const Icon(YaruIcons.meter_6),
+            tooltip: 'Toggle speed mode',
+          ),
+          IconButton(
+            onPressed: _savePopulationBackup,
+            icon: const Icon(YaruIcons.save),
+            tooltip: 'Save population',
+          ),
+          IconButton(
+            onPressed: _restorePopulationBackup,
+            icon: const Icon(YaruIcons.folder),
+            tooltip: 'Load population',
           ),
         ],
       ),
@@ -52,5 +69,35 @@ class _AppState extends State<App> {
         ),
       ),
     );
+  }
+
+  void _savePopulationBackup() async {
+    final outputFilePath = await FilePicker.platform.saveFile(
+      dialogTitle: 'Please select an output file:',
+      fileName: 'population.json',
+    );
+
+    if (outputFilePath == null) {
+      return;
+    }
+
+    await File(outputFilePath).writeAsString(
+      jsonEncode(_snakeAi.population.toJson()),
+    );
+  }
+
+  void _restorePopulationBackup() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['json'],
+    );
+
+    if (result == null) {
+      return;
+    }
+
+    final file = File(result.files.single.path!);
+    final json = jsonDecode(await file.readAsString());
+    _snakeAi.population = Population.fromJson(json);
   }
 }

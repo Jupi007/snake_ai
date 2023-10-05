@@ -61,14 +61,25 @@ class SnakeGameAI {
   int get individual => _individual;
   int get populationSize => _populationSize;
 
-  int _generation = 1;
-  int get generation => _generation;
+  int get generation => _population.generation;
 
   int _framesSinceLastFruit = 0;
   bool get _frameOverflow =>
       _framesSinceLastFruit > playroomSize * playroomSize;
 
-  late final Population _population;
+  late Population _population;
+  Population get population => _population;
+  set population(Population population) {
+    _population = population;
+    _score = 0;
+    _bestScore = 0;
+    _individual = 1;
+    _framesSinceLastFruit = 0;
+
+    game.kill();
+    game.init();
+    valueChangedEvent.broadcast();
+  }
 
   NeuralNetwork get currentNeuralNetwork =>
       _population.individuals[_individual - 1];
@@ -208,15 +219,15 @@ class SnakeGameAI {
     _bestScore = _score > _bestScore ? _score : _bestScore;
     _score = 0;
     _framesSinceLastFruit = 0;
-    game.reset();
+    game.init();
 
     valueChangedEvent.broadcast();
   }
 
   void _newIndividual() {
     currentNeuralNetwork.fitness = math.max(
-      _frameOverflow ? .01 : _score.toDouble(),
-      .01,
+      _frameOverflow ? minimalFitness : _score.toDouble(),
+      minimalFitness,
     );
     _individual++;
 
@@ -231,7 +242,6 @@ class SnakeGameAI {
   void _newGeneration() {
     _population.newGeneration();
     _individual = 1;
-    _generation++;
 
     valueChangedEvent.broadcast();
   }

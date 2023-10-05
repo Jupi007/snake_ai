@@ -16,6 +16,14 @@ class Connection {
     this.weight = weight ?? randomDouble(-1.0, 1.0);
   }
 
+  Map<String, dynamic> toJson() => {
+        'input': input.id,
+        'output': output.id,
+        'innovation': innovation,
+        'weight': weight,
+        'enabled': enabled,
+      };
+
   bool enabled;
 
   static int innovationCounter = 0;

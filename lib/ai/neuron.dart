@@ -4,6 +4,10 @@ import 'connection.dart';
 abstract class Neuron {
   late final int id;
   double get value;
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+      };
 }
 
 abstract interface class WithInputsNeuron extends Neuron {
@@ -31,6 +35,12 @@ mixin WithInputsNeuronMixin on Neuron implements WithInputsNeuron {
 }
 
 class InputNeuron extends Neuron implements WithOutputsNeuron {
+  InputNeuron();
+
+  factory InputNeuron.fromJson(Map<String, dynamic> json) {
+    return InputNeuron()..id = json['id'] as int;
+  }
+
   @override
   final List<Connection> outputs = [];
 
@@ -44,6 +54,12 @@ class InputNeuron extends Neuron implements WithOutputsNeuron {
 class HiddenNeuron extends Neuron
     with WithInputsNeuronMixin
     implements WithOutputsNeuron {
+  HiddenNeuron();
+
+  factory HiddenNeuron.fromJson(Map<String, dynamic> json) {
+    return HiddenNeuron()..id = json['id'] as int;
+  }
+
   @override
   final List<Connection> inputs = [];
   @override
@@ -51,6 +67,12 @@ class HiddenNeuron extends Neuron
 }
 
 class OutputNeuron extends Neuron with WithInputsNeuronMixin {
+  OutputNeuron();
+
+  factory OutputNeuron.fromJson(Map<String, dynamic> json) {
+    return OutputNeuron()..id = json['id'] as int;
+  }
+
   @override
   final List<Connection> inputs = [];
 }
